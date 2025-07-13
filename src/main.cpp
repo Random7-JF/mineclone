@@ -1,17 +1,29 @@
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
 
-void cleanup(SDL_Window *window);
+struct SDLState
+{
+	SDL_Window *window;
+	SDL_Renderer *renderer;
+};
+
+void cleanup(SDLState state);
 
 int main(int argc, char *argv[])
 {
-	SDL_Init(SDL_INIT_VIDEO);
+	SDLState state;
+	
+	if(!SDL_Init(SDL_INIT_VIDEO))
+	{
+		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", "Error Initializing SDL3", nullptr);
+		return 1;
+	}
 
-	int width = 800;
-	int height = 600;
-	SDL_Window *window = SDL_CreateWindow("SDL", width, height, 0);
-	if (!window) {
-		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", "Error creating window", window);
+	int width = 1024;
+	int height = 768;
+	state.window = SDL_CreateWindow("SDL", width, height, 0);
+	if (!state.window) {
+		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", "Error creating window", state.window);
 		return 1;
 	}
 
@@ -35,11 +47,11 @@ int main(int argc, char *argv[])
 
 	}
 
-	cleanup(window);
+	cleanup(state);
 	return 0;
 }
 
-void cleanup(SDL_Window *window) {
-	SDL_DestroyWindow(window);
+void cleanup(SDLState state) {
+	SDL_DestroyWindow(state.window);
 	SDL_Quit();
 }
