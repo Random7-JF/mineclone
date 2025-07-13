@@ -1,6 +1,6 @@
 CC = g++
 BUILD_DIR = build
-SRC_FILE = src/main.cpp
+SRC_FILE = src/*.cpp
 TARGET = $(BUILD_DIR)/mineclone
 
 # Use pkg-config to get SDL3 CFLAGS and LIBS
