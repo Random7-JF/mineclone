@@ -5,31 +5,19 @@ struct SDLState
 {
 	SDL_Window *window;
 	SDL_Renderer *renderer;
+	int width, height;
 };
 
 void cleanup(SDLState &state);
+bool initializeSDL(SDLState &state);
 
 int main(int argc, char *argv[])
 {
 	SDLState state;
+	state.width = 1024;
+	state.height = 768;
 
-	if(!SDL_Init(SDL_INIT_VIDEO))
-	{
-		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", "Error Initializing SDL3", nullptr);
-		return 1;
-	}
-
-	int width = 1024;
-	int height = 768;
-	state.window = SDL_CreateWindow("SDL", width, height, 0);
-	if (!state.window) {
-		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", "Error creating window", state.window);
-		return 1;
-	}
-
-	state.renderer = SDL_CreateRenderer(state.window, NULL);
-	if (!state.renderer) {
-		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", "Error creating renderer", state.window);
+	if (!initializeSDL(state)){
 		return 1;
 	}
 
@@ -62,6 +50,29 @@ int main(int argc, char *argv[])
 
 	cleanup(state);
 	return 0;
+}
+
+bool initializeSDL(SDLState &state) {
+	bool initilized = false;
+	if(!SDL_Init(SDL_INIT_VIDEO))
+	{
+		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", "Error Initializing SDL3", nullptr);
+		return initilized;
+	}
+
+	state.window = SDL_CreateWindow("SDL", state.width, state.height, 0);
+	if (!state.window) {
+		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", "Error creating window", state.window);
+		return initilized;
+	}
+
+	state.renderer = SDL_CreateRenderer(state.window, NULL);
+	if (!state.renderer) {
+		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", "Error creating renderer", state.window);
+		return initilized;
+	}
+	initilized = true;
+	return initilized;
 }
 
 void cleanup(SDLState &state) {
