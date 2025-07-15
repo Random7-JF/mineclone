@@ -1,23 +1,15 @@
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
 
-struct SDLState
-{
-	SDL_Window *window;
-	SDL_Renderer *renderer;
-	int width, height;
-};
-
-void cleanup(SDLState &state);
-bool initializeSDL(SDLState &state);
+#include "app.h"
 
 int main(int argc, char *argv[])
 {
-	SDLState state;
-	state.width = 1024;
-	state.height = 768;
+	App app{};
+	app.state.width = 1024;
+	app.state.height = 768;
 
-	if (!initializeSDL(state)){
+	if (!app.Initialize()){
 		return 1;
 	}
 
@@ -40,42 +32,14 @@ int main(int argc, char *argv[])
 		}
 
 		// draw calls
-		SDL_SetRenderDrawColor(state.renderer,30,20,10,255);
-		SDL_RenderClear(state.renderer);
+		SDL_SetRenderDrawColor(app.state.renderer,30,20,10,255);
+		SDL_RenderClear(app.state.renderer);
 
 		// swap buffers
-		SDL_RenderPresent(state.renderer);
+		SDL_RenderPresent(app.state.renderer);
 
 	}
 
-	cleanup(state);
+	app.CleanUp();
 	return 0;
-}
-
-bool initializeSDL(SDLState &state) {
-	bool initilized = false;
-	if(!SDL_Init(SDL_INIT_VIDEO))
-	{
-		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", "Error Initializing SDL3", nullptr);
-		return initilized;
-	}
-
-	state.window = SDL_CreateWindow("SDL", state.width, state.height, 0);
-	if (!state.window) {
-		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", "Error creating window", state.window);
-		return initilized;
-	}
-
-	state.renderer = SDL_CreateRenderer(state.window, NULL);
-	if (!state.renderer) {
-		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", "Error creating renderer", state.window);
-		return initilized;
-	}
-	initilized = true;
-	return initilized;
-}
-
-void cleanup(SDLState &state) {
-	SDL_DestroyWindow(state.window);
-	SDL_Quit();
 }
