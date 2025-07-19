@@ -34,7 +34,6 @@ void Game::Run() {
   // start game loop
   bool running = true;
   while (running) {
-    SDL_Log("tick");
     // start event loop
     SDL_Event event{};
     while (SDL_PollEvent(&event)) {
