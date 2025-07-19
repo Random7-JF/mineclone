@@ -35,13 +35,30 @@ bool Game::Init(int width, int height, int game_width, int game_height) {
 void Game::Run() {
   SDL_Log("running...");
   //config game presentation
-  SDL_SetRenderLogicalPresentation(m_state.renderer, m_state.game_width, m_state.game_height, SDL_LOGICAL_PRESENTATION_INTEGER_SCALE);
+  SDL_SetRenderLogicalPresentation(m_state.renderer, m_state.game_width, m_state.game_height, SDL_LOGICAL_PRESENTATION_LETTERBOX);
+
   // load game assests
   SDL_Texture *idleTex = IMG_LoadTexture(m_state.renderer, "data/idle.png");
   SDL_SetTextureScaleMode(idleTex, SDL_SCALEMODE_NEAREST);
+
+  // setup game date
+  const bool *keys = SDL_GetKeyboardState(nullptr);
+
+  // TODO move player into class
+  float sprite_size = 32.0f;
+  float sprite_scale = 2.0f;
+  float player_x = (m_state.game_width / 2) - (sprite_size * sprite_scale);
+  float player_y = m_state.game_height - (sprite_size * sprite_scale);
+
   // start game loop
   bool running = true;
+  uint64_t prevTime = SDL_GetTicks();
   while (running) {
+
+    // Setup delta time
+    uint64_t nowTime = SDL_GetTicks();
+    float delta = (nowTime - prevTime) / 1000.0f;
+
     // start event loop
     SDL_Event event{};
     while (SDL_PollEvent(&event)) {
@@ -57,6 +74,18 @@ void Game::Run() {
         break;
       }
       }
+
+      // player movement code
+      float moveAmount = 0;
+      if (keys[SDL_SCANCODE_A]) {
+        moveAmount += -20.0f;
+      }
+      if (keys[SDL_SCANCODE_D]) {
+        moveAmount += 20.0f;
+      }
+      player_x += moveAmount * delta;
+
+      SDL_Log("Player_x: %f, moveAmount: %f, delta: %f", player_x, moveAmount, delta);
     }
 
     // draw calls
@@ -71,12 +100,11 @@ void Game::Run() {
     };
     
     SDL_FRect dst {
-      .x = m_state.game_width/2-32,
-      .y = m_state.game_height/2-32,
-      .w = 64,
-      .h = 64
+      .x = player_x,
+      .y = player_y,
+      .w = sprite_size * sprite_scale,
+      .h = sprite_size * sprite_scale
     };
-
     SDL_RenderTexture(m_state.renderer, idleTex, &src, &dst);
 
     // swap buffers
