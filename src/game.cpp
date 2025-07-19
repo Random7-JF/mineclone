@@ -22,7 +22,7 @@ bool Game::Init(int width, int height) {
   m_state.renderer = SDL_CreateRenderer(m_state.window, NULL);
   if (!m_state.renderer) {
     SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error",
-                             "Error creating renderer", m_state.window);
+                             "error creating renderer", m_state.window);
     return initialized;
   }
   initialized = true;
