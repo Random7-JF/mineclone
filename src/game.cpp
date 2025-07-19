@@ -50,6 +50,7 @@ void Game::Run() {
   float player_x = (m_state.game_width / 2) - (sprite_size * sprite_scale);
   float player_y = m_state.game_height - (sprite_size * sprite_scale);
   float player_movespeed = 100.0f;
+  bool player_flip = false;
 
   // start game loop
   bool running = true;
@@ -80,9 +81,11 @@ void Game::Run() {
     // player movement code
     float moveAmount = 0;
     if (keys[SDL_SCANCODE_A]) {
+      player_flip = false;
       moveAmount += -player_movespeed;
     }
     if (keys[SDL_SCANCODE_D]) {
+      player_flip = true;
       moveAmount += player_movespeed;
     }
     player_x += moveAmount * delta;
@@ -107,7 +110,8 @@ void Game::Run() {
       .w = sprite_size * sprite_scale,
       .h = sprite_size * sprite_scale
     };
-    SDL_RenderTexture(m_state.renderer, idleTex, &src, &dst);
+
+    SDL_RenderTextureRotated(m_state.renderer, idleTex, &src, &dst, 0, nullptr, (player_flip) ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
 
     // swap buffers
     SDL_RenderPresent(m_state.renderer);
