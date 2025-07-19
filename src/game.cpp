@@ -46,7 +46,7 @@ void Game::Run() {
 
   // TODO move player into class
   float sprite_size = 32.0f;
-  float sprite_scale = 2.0f;
+  float sprite_scale = 1.0f;
   float player_x = (m_state.game_width / 2) - (sprite_size * sprite_scale);
   float player_y = m_state.game_height - (sprite_size * sprite_scale);
 
@@ -60,33 +60,34 @@ void Game::Run() {
     float delta = (nowTime - prevTime) / 1000.0f;
 
     // start event loop
-    SDL_Event event{};
+    SDL_Event event{ 0 };
     while (SDL_PollEvent(&event)) {
       switch (event.type) {
-      case SDL_EVENT_QUIT: {
-        running = false;
-        break;
+        case SDL_EVENT_QUIT: {
+          running = false;
+          break;
+        }
+        case SDL_EVENT_WINDOW_RESIZED:
+        {
+          m_state.width = event.window.data1;
+          m_state.height = event.window.data2;
+          break;
+        }
       }
-      case SDL_EVENT_WINDOW_RESIZED:
-      {
-        m_state.width = event.window.data1;
-        m_state.height = event.window.data2;
-        break;
-      }
-      }
-
-      // player movement code
-      float moveAmount = 0;
-      if (keys[SDL_SCANCODE_A]) {
-        moveAmount += -20.0f;
-      }
-      if (keys[SDL_SCANCODE_D]) {
-        moveAmount += 20.0f;
-      }
-      player_x += moveAmount * delta;
-
-      SDL_Log("Player_x: %f, moveAmount: %f, delta: %f", player_x, moveAmount, delta);
     }
+    
+    // player movement code
+    float moveAmount = 0;
+    if (keys[SDL_SCANCODE_A]) {
+      moveAmount += -20.0f;
+    }
+    if (keys[SDL_SCANCODE_D]) {
+      moveAmount += 20.0f;
+    }
+    player_x += moveAmount * delta;
+    
+    SDL_Log("Player_x: %f, delta: %f", player_x, delta);
+ 
 
     // draw calls
     SDL_SetRenderDrawColor(m_state.renderer, 28, 20, 10, 255);
