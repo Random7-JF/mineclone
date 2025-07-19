@@ -1,13 +1,18 @@
 #pragma once
-#include "app.h"
 #include <SDL3/SDL.h>
+
+struct SDLState {
+  SDL_Window *window;
+  SDL_Renderer *renderer;
+  int width, height;
+};
 
 class Game {
 private:
-  AppState *m_AppState;
-  bool Run();
+  SDLState m_state;
 
 public:
-  explicit Game(AppState *m_AppState) : m_AppState(m_AppState) {}
-  bool InitAndRun();
+  bool Init(int width, int height);
+  void Cleanup();
+  void Run();
 };
