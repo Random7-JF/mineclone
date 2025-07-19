@@ -75,8 +75,6 @@ void Game::Run()
   // config game presentation
   SDL_SetRenderLogicalPresentation(m_state.renderer, m_state.game_width, m_state.game_height, SDL_LOGICAL_PRESENTATION_LETTERBOX);
 
-
-
   // setup game date
   Resources res;
   res.load(m_state);
@@ -88,6 +86,14 @@ void Game::Run()
   player.animations = res.playerAnims;
   player.currentAnimation = res.ANIM_PLAYER_IDLE;
   gs.layers[Layer_Index_Characters].push_back(player);
+
+  GameObject player2;
+  player2.type = ObjectType::player;
+  player2.texture = res.texIdle;
+  player2.animations = res.playerAnims;
+  player2.currentAnimation = res.ANIM_PLAYER_IDLE;
+  player2.position = glm::vec2(150,150);
+  gs.layers[Layer_Index_Characters].push_back(player2);
 
 
   const bool *keys = SDL_GetKeyboardState(nullptr);
