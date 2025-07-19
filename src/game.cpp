@@ -46,9 +46,10 @@ void Game::Run() {
 
   // TODO move player into class
   float sprite_size = 32.0f;
-  float sprite_scale = 1.0f;
+  float sprite_scale = 2.0f;
   float player_x = (m_state.game_width / 2) - (sprite_size * sprite_scale);
   float player_y = m_state.game_height - (sprite_size * sprite_scale);
+  float player_movespeed = 100.0f;
 
   // start game loop
   bool running = true;
@@ -75,14 +76,14 @@ void Game::Run() {
         }
       }
     }
-    
+
     // player movement code
     float moveAmount = 0;
     if (keys[SDL_SCANCODE_A]) {
-      moveAmount += -20.0f;
+      moveAmount += -player_movespeed;
     }
     if (keys[SDL_SCANCODE_D]) {
-      moveAmount += 20.0f;
+      moveAmount += player_movespeed;
     }
     player_x += moveAmount * delta;
     
@@ -110,6 +111,7 @@ void Game::Run() {
 
     // swap buffers
     SDL_RenderPresent(m_state.renderer);
+    prevTime = nowTime;
   }
   SDL_DestroyTexture(idleTex);
 }
