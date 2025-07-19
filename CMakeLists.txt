@@ -8,7 +8,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 set(CMAKE_CXX_STANDARD 17)
 
 #if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    add_compile_options(-Wall -Wextra -g)
+add_compile_options(-Wall -Wextra -g)
 #else()
  #   add_compile_options(-Wall -Wextra)
 #endif()

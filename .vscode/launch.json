@@ -4,7 +4,7 @@
 		"name": "gdb Launch",
 		"type": "cppdbg",
 		"request": "launch",
-		"cwd": "${workspaceRoot}/data",
+		"cwd": "${workspaceFolder}/build",
 		"miDebuggerPath": "/usr/bin/gdb",
 		"program": "${workspaceRoot}/build/bin/${workspaceFolderBasename}"
 	}
