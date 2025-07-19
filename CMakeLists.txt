@@ -3,6 +3,7 @@ project(MineClone CXX)
 
 find_package(SDL3 CONFIG REQUIRED)
 find_package(SDL3_image REQUIRED)
+find_package(glm CONFIG REQUIRED)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 set(CMAKE_CXX_STANDARD 17)
@@ -14,11 +15,12 @@ add_compile_options(-Wall -Wextra -g)
 #endif()
 
 
+
 set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 file(GLOB_RECURSE APP_SOURCES "${SOURCE_DIR}/*.cpp")
 
 add_executable(mineclone ${APP_SOURCES})
 
 target_include_directories(mineclone PUBLIC ${SOURCE_DIR})
-target_link_libraries(mineclone PRIVATE SDL3::SDL3 SDL3_image::SDL3_image)
+target_link_libraries(mineclone PRIVATE SDL3::SDL3 SDL3_image::SDL3_image glm::glm)
 install(TARGETS mineclone DESTINATION bin)

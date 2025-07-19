@@ -9,8 +9,8 @@ int main(int argc, char *argv[]) {
   int game_width = 640;
   int game_height = 360;
 
-  Game game;
-  if (!game.Init(width, height, game_width, game_height)) {
+  Game game(width, height, game_width, game_height);
+  if (!game.Init()) {
     SDL_Log("Failed to Init");
   }
   game.Run();
